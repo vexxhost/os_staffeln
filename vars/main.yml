@@ -1,0 +1,22 @@
+---
+# vars file for openstack-ansible-os_staffeln
+python_venv_build_packages:
+  - cmake
+  - g++
+  - "{{ (venv_python_executable == 'python2') | ternary('pkg-config', 'python3-pkgconfig') }}"
+  - "{{ (venv_python_executable == 'python2') | ternary('python-dev', 'python3-dev') }}"
+  - python3-pip
+
+staffeln_requirements:
+  - pbr>=2.0
+  - flask
+  - cotyledon>=1.3.0
+  - futurist>=1.8.0
+  - gunicorn
+  - oslo.db>=5.0.0
+  - oslo.config>=8.1.0
+  - oslo.log>=4.4.0
+  - oslo_versionedobjects
+  - openstacksdk>0.28.0
+  - pymysql
+  - parse

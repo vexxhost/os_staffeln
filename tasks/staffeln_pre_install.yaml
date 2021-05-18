@@ -1,0 +1,27 @@
+- name: Create the staffeln system group
+  group:
+    name: "{{ staffeln_system_group_name }}"
+    state: present
+    system: yes
+
+- name: Create staffeln system user
+  user:
+    name: "{{ staffeln_system_user_name }}"
+    group: "{{ staffeln_system_group_name }}"
+    comment: "{{ staffeln_system_comment }}"
+    shell: "{{ staffeln_system_shell }}"
+    system: "yes"
+    createhome: "yes"
+    home: "{{ staffeln_system_user_home }}"
+
+- name: Create staffeln dir
+  file:
+    path: "{{ item.path }}"
+    state: "directory"
+    owner: "{{ item.owner|default(staffeln_system_user_name) }}"
+    group: "{{ item.group|default(staffeln_system_group_name) }}"
+    mode: "{{ item.mode|default('0755') }}"
+  with_items:
+    - { path: "/openstack/venvs", mode: "0755", owner: "root", group: "root" }
+    - { path: "/etc/staffeln", mode: "2750" }
+    - { path: "{{ staffeln_system_user_home }}", mode: "2755" }

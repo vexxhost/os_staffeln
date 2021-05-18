@@ -1,0 +1,29 @@
+[conductor]
+backup_workers = {{ backup_workers | default("1") }}
+rotation_workers = {{ rotation_workers | default("1") }}
+backup_service_period = {{ backup_service_period | default("1") }}
+retention_service_period = {{ retention_service_period | default("20") }}
+backup_cycle_timout = {{ backup_cycle_timout | default("5min") }}
+{% if retention_time is defined %}
+retention_time = 2w3d
+{% endif %}
+backup_metadata_key= {{ backup_metadata_key | default("__automated_backup") }}
+
+[database]
+{% if db_backend is defined %}
+backend = {{ db_backend }}
+{% endif %}
+{% if db_connection is defined %}
+connection = {{ db_connection }}
+{% endif %}
+mysql_engine = {{ mysql_engine | default("InnoDB") }}
+
+[api]
+host = {{ api_host | default("0.0.0.0") }}
+port = {{ api_port | default("8808") }}
+{% if api_ssl == True %}
+enabled_ssl = true
+ca_file = {{ ca_file }}
+ssl_cert_file = {{ ssl_cert_file }}
+ssl_key_file = {{ ssl_key_file }} 
+{% endif %}

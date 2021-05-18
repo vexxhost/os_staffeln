@@ -1,0 +1,25 @@
+- name: Create the systemd file for staffeln conductor
+  template:
+    src: systemd/staffeln-conductor.service.j2
+    dest: /etc/systemd/system/staffeln-conductor.service
+    owner: root
+    group: root
+    mode: '0644'
+  notify: daemon-reload
+
+- name: Create the systemd file for staffeln api.
+  template:
+    src: systemd/staffeln-api.service.j2
+    dest: /etc/systemd/system/staffeln-api.service
+    owner: root
+    group: root
+    mode: '0644'
+  notify: daemon-reload
+
+- name: Create staffeln.conf file
+  template:
+    src: config/staffeln.conf.j2
+    dest: /etc/staffeln/staffeln.conf
+    owner: root
+    group: "{{ staffeln_system_group_name }}"
+  notify: restart-staffeln

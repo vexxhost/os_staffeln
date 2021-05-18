@@ -1,0 +1,17 @@
+---
+# defaults file for openstack-ansible-os_staffeln
+venv_path: "/openstack/venvs"
+venv_python_executable: "/usr/bin/python3.6"
+staffeln_system_user_name: staffeln
+staffeln_system_group_name: staffeln
+staffeln_system_shell: /bin/false
+staffeln_system_comment: staffeln system user
+staffeln_system_user_home: "/var/lib/{{ staffeln_system_user_name }}"
+source_repo_access: ssh # Values available are ssh and https
+
+# When using https for accessing the git source repo.
+# staffeln_source_path: https://github.com/vexxhost/staffeln.git
+# ":" needs to be replaced with "/" to avoid host not found error while using ssh.
+staffeln_source_path: git@github.com/vexxhost/staffeln.git
+
+api_ssl: False
