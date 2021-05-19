@@ -1,7 +1,7 @@
 [conductor]
 backup_workers = {{ backup_workers | default("1") }}
 rotation_workers = {{ rotation_workers | default("1") }}
-backup_service_period = {{ backup_service_period | default("1") }}
+backup_service_period = {{ backup_service_period | default("10") }}
 retention_service_period = {{ retention_service_period | default("20") }}
 backup_cycle_timout = {{ backup_cycle_timout | default("5min") }}
 {% if retention_time is defined %}

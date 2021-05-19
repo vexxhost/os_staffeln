@@ -23,3 +23,6 @@
     owner: root
     group: "{{ staffeln_system_group_name }}"
   notify: restart-staffeln
+
+- name: Run staffeln-db-manage command
+  shell: "{{ venv_path }}/staffeln/bin/staffeln-db-manage"
