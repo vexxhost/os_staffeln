@@ -1,0 +1,60 @@
+- name: Gather staffeln facts
+  hosts: staffeln_all
+  gather_facts: false
+  tags:
+    - always
+  tasks:
+    - name: Gather minimal facts for staffeln
+      setup:
+        gather_subset:
+          - "!all"
+          - min
+      when: osa_gather_facts | default(True)
+
+    - name: Gather additional facts for staffeln
+      setup:
+        gather_subset: "{{ staffeln_gather_subset | default('processor_count') }}"
+        filter: "{{ staffeln_gather_filter | default('ansible_processor*') }}"
+      when: osa_gather_facts | default(True)
+
+- name: Install staffeln services
+  hosts: staffeln_all
+  gather_facts: false
+  user: root
+  environment: "{{ deployment_environment_variables | default({}) }}"
+  tags:
+    - staffeln
+  pre_tasks:
+    
+    - name: Determine management bridge IP address
+      include_tasks: common-tasks/dynamic-address-fact.yml
+      vars:
+        network_address: "container_address"
+      tags:
+        - always
+    
+    - name: Configure Container
+      include_tasks: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
+      when: not is_metal
+
+    - include_tasks: common-tasks/unbound-clients.yml
+      when:
+        - hostvars['localhost']['resolvconf_enabled'] | bool
+
+    - name: Copy ssh key to the container
+      copy:
+        src: "{{ deploy_key }}"
+        dest: "/root/.ssh/id_rsa"
+        owner: root
+        group: root
+        mode: '0600'
+      when: staffeln_repo_mode == "private"
+
+  roles:
+    - role: haproxy_endpoints
+      haproxy_state: disabled
+      when: "groups['haproxy'] | default([]) | length > 0"
+    - role: os_staffeln
+    - role: openstack_openrc
+      vars:
+        openrc_file_dest: "/etc/staffeln/openrc"
