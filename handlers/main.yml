@@ -1,0 +1,14 @@
+---
+# handlers file for openstack-ansible-os_staffeln
+- name: daemon-reload
+  systemd:
+    daemon_reload: yes
+
+- name: restart-staffeln
+  systemd:
+    name: "{{ item }}"
+    state: restarted
+    enabled: yes
+  with_items:
+    - staffeln-conductor
+    - staffeln-api

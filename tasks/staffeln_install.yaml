@@ -1,0 +1,42 @@
+- name: Install packages
+  package:
+    name: "{{ python_venv_build_packages }}"
+    state: present
+
+- name: Install virtualenv package in host
+  pip:
+    name: virtualenv
+    executable: pip3
+
+- name: Create virtualenvironment for staffeln
+  command: >-
+    virtualenv
+    --no-download
+    --python={{ venv_python_executable | default("python3.6") }}
+    {{ venv_path }}/staffeln
+  args:
+    creates: "{{ venv_path }}/staffeln/bin/activate"
+
+- name: Install virtualenv package in host
+  pip:
+    name: pip
+    state: latest
+    virtualenv: "{{ venv_path }}/staffeln"
+
+- name: Install staffeln from github with ssh
+  pip:
+    name: git+ssh://{{ staffeln_source_path }}
+    virtualenv: "{{ venv_path }}/staffeln"
+  when: source_repo_access == "ssh"
+
+- name: Install staffeln from github with https
+  pip:
+    name: git+{{ staffeln_source_path }}
+    virtualenv: "{{ venv_path }}/staffeln"
+  when: source_repo_access == "https"
+
+- name: Install requirements
+  pip:
+    name: "{{ item }}"
+    virtualenv: "{{ venv_path }}/staffeln"
+  with_items: "{{ staffeln_requirements }}"

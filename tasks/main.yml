@@ -1,0 +1,7 @@
+---
+# tasks file for openstack-ansible-os_staffeln
+- import_tasks: staffeln_pre_install.yaml
+
+- import_tasks: staffeln_install.yaml
+
+- import_tasks: staffeln_prepare_service.yaml
