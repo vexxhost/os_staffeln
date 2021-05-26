@@ -3,6 +3,14 @@
     name: "{{ python_venv_build_packages }}"
     state: present
 
+- name: Disable git hostkey checking
+  command: >-
+    git 
+    config 
+    --global 
+    core.sshCommand 
+    'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
+
 - name: Install virtualenv package in host
   pip:
     name: virtualenv

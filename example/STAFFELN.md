@@ -56,5 +56,10 @@ physical_skel:
     belongs_to:
       - hosts
 ```
+6. If the environment already has the working openstack environment, you will need to run the two playbook. One for creating the HAproxy endpoint, and another for creating the lxc container.
+```BASH
+$ openstack-ansible haproxy-install.yaml --tags "haproxy-config"
+$ openstack-ansible containers-lxc-create.yml
+```
 
 6. You can run the staffeln-setup.yml playbook to install the staffeln service.
