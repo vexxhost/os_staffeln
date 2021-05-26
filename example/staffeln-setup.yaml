@@ -58,3 +58,13 @@
     - role: openstack_openrc
       vars:
         openrc_file_dest: "/etc/staffeln/openrc"
+        
+  tasks:
+    - name: Get environment variable
+      command: "cat /etc/staffeln/openrc"
+      register: envoutput
+
+    - name: Source the openstack-environment variables
+      lineinfile:
+        dest: /etc/environment
+        line: "{{ envoutput.stdout }}"
