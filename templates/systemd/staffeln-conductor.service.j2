@@ -7,8 +7,8 @@ After = syslog.target
 Type = simple
 User = {{ staffeln_system_user_name }}
 Group = {{ staffeln_system_group_name }}
+EnvironmentFile = /etc/staffeln/openrc
 ExecStart = {{ venv_path }}/staffeln/bin/staffeln-conductor
-EnvironmentFile=/etc/staffeln/openrc
 ExecReload = /bin/kill -HUP $MAINPID
 # Give a reasonable amount of time for the server to start up/shut down
 TimeoutSec = 120
