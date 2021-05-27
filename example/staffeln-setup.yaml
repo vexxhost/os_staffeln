@@ -68,3 +68,8 @@
       lineinfile:
         dest: /etc/environment
         line: "{{ envoutput.stdout }}"
+
+    - name: Remove the export keyword from the openrc file
+      replace:
+        path: /etc/staffeln/openrc
+        regexp: 'export'

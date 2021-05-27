@@ -36,6 +36,7 @@
     name: git+ssh://{{ staffeln_source_path }}
     virtualenv: "{{ venv_path }}/staffeln"
   when: source_repo_access == "ssh"
+  notify: restart-staffeln
 
 - name: Install staffeln from github with https
   pip:
