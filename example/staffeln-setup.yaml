@@ -1,5 +1,5 @@
 - name: Gather staffeln facts
-  hosts: staffeln_all
+  hosts: staffeln_container
   gather_facts: false
   tags:
     - always
@@ -18,7 +18,7 @@
       when: osa_gather_facts | default(True)
 
 - name: Install staffeln services
-  hosts: staffeln_all
+  hosts: staffeln_container
   gather_facts: false
   user: root
   environment: "{{ deployment_environment_variables | default({}) }}"
@@ -72,4 +72,4 @@
     - name: Remove the export keyword from the openrc file
       replace:
         path: /etc/staffeln/openrc
-        regexp: 'export'
+        regexp: 'export '

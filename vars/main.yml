@@ -7,7 +7,7 @@ python_venv_build_packages:
   - "{{ (venv_python_executable == 'python2') | ternary('python-dev', 'python3-dev') }}"
   - python3-pip
   - git
-  - postfix
+  - python-pip
 
 staffeln_requirements:
   - pbr>=2.0

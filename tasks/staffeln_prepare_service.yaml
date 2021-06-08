@@ -26,3 +26,4 @@
 
 - name: Run staffeln-db-manage command
   shell: "{{ venv_path }}/staffeln/bin/staffeln-db-manage"
+  run_once: true
