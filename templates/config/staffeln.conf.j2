@@ -1,13 +1,17 @@
 [conductor]
 backup_workers = {{ backup_workers | default("1") }}
 rotation_workers = {{ rotation_workers | default("1") }}
-backup_service_period = {{ backup_service_period | default("10") }}
+backup_service_period = {{ backup_service_period | default("30") }}
 retention_service_period = {{ retention_service_period | default("20") }}
+{% if backup_cycle_timout is defined %}
 backup_cycle_timout = {{ backup_cycle_timout | default("5min") }}
-{% if retention_time is defined %}
-retention_time = 2w3d
 {% endif %}
+{% if retention_time is defined %}
+retention_time = {{ retention_time }}
+{% endif %}
+{% if backup_metadata_key is defined %}
 backup_metadata_key= {{ backup_metadata_key | default("__automated_backup") }}
+{% endif %}
 
 [database]
 {% if db_backend is defined %}
@@ -26,4 +30,18 @@ enabled_ssl = true
 ca_file = {{ ca_file }}
 ssl_cert_file = {{ ssl_cert_file }}
 ssl_key_file = {{ ssl_key_file }} 
+{% endif %}
+
+[notification]
+{% if notification_reciver is defined %}
+reciver = {{ notification_reciver }}
+{% endif %}
+{% if sender_email is defined %}
+sender_email = {{ sender_email }}
+{% endif %}
+{% if smtp_server_domain is defined %}
+smtp_server_domain = {{ smtp_server_domain }}
+{% endif %}
+{% if smtp_server_port is defined %}
+smtp_server_port = {{ smtp_server_port }}
 {% endif %}
