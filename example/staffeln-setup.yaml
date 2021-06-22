@@ -1,6 +1,8 @@
 - name: Gather staffeln facts
   hosts: staffeln_container
   gather_facts: false
+  vars:
+    rc_content: "{{ lookup('file', '{{openrc_location}}') }}"
   tags:
     - always
   tasks:
@@ -25,14 +27,13 @@
   tags:
     - staffeln
   pre_tasks:
-    
     - name: Determine management bridge IP address
       include_tasks: common-tasks/dynamic-address-fact.yml
       vars:
         network_address: "container_address"
       tags:
         - always
-    
+
     - name: Configure Container
       include_tasks: "common-tasks/os-{{ container_tech | default('lxc') }}-container-setup.yml"
       when: not is_metal
@@ -47,7 +48,7 @@
         dest: "/root/.ssh/id_rsa"
         owner: root
         group: root
-        mode: '0600'
+        mode: "0600"
       when: staffeln_repo_mode == "private"
 
   roles:
@@ -58,18 +59,14 @@
     - role: openstack_openrc
       vars:
         openrc_file_dest: "/etc/staffeln/openrc"
-        
+
   tasks:
-    - name: Get environment variable
-      command: "cat /etc/staffeln/openrc"
-      register: envoutput
+    - set_fact:
+        rc_content: "{{ openrc | regex_findall('(export .+)+', multiline=True, ignorecase=True) | regex_replace('export ') }}"
 
-    - name: Source the openstack-environment variables
+    - name: Create the openrc file
       lineinfile:
-        dest: /etc/environment
-        line: "{{ envoutput.stdout }}"
-
-    - name: Remove the export keyword from the openrc file
-      replace:
-        path: /etc/staffeln/openrc
-        regexp: 'export '
+        path: files/openrc_2
+        line: "{{ item }}"
+      with_items: "{{ rc_content }}"
+      no_log: true
