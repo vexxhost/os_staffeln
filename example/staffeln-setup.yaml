@@ -1,5 +1,5 @@
 - name: Gather staffeln facts
-  hosts: staffeln_container
+  hosts: staffeln_container[0]
   gather_facts: false
   tags:
     - always
@@ -18,7 +18,7 @@
       when: osa_gather_facts | default(True)
 
 - name: Install staffeln services
-  hosts: staffeln_container
+  hosts: staffeln_container[0]
   gather_facts: false
   user: root
   environment: "{{ deployment_environment_variables | default({}) }}"
