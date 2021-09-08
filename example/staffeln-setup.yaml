@@ -58,7 +58,7 @@
     - role: os_staffeln
     - role: openstack_openrc
       vars:
-        openrc_file_dest: "/etc/staffeln/openrc"
+        openrc_file_dest: "/root/openrc"
 
   tasks:
     - set_fact:
