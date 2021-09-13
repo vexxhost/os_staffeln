@@ -9,9 +9,7 @@ backup_cycle_timout = {{ backup_cycle_timout | default("5min") }}
 {% if retention_time is defined %}
 retention_time = {{ retention_time }}
 {% endif %}
-{% if backup_metadata_key is defined %}
 backup_metadata_key= {{ backup_metadata_key | default("__automated_backup") }}
-{% endif %}
 
 [database]
 {% if db_backend is defined %}
