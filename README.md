@@ -14,6 +14,7 @@ Role for staffeln deployment
 - backup_metadata_key
 - db_backend
 - db_connection
+- tooz_connection
 - notification_reciver
 - sender_email
 - smtp_server_domain
