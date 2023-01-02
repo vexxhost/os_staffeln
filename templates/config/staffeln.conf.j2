@@ -1,8 +1,8 @@
 [conductor]
 backup_workers = {{ backup_workers | default("1") }}
 rotation_workers = {{ rotation_workers | default("1") }}
-backup_service_period = {{ backup_service_period | default("30") }}
-retention_service_period = {{ retention_service_period | default("20") }}
+backup_service_period = {{ backup_service_period | default("1800") }}
+retention_service_period = {{ retention_service_period | default("1200") }}
 {% if backup_cycle_timout is defined %}
 backup_cycle_timout = {{ backup_cycle_timout | default("5min") }}
 {% endif %}
@@ -17,6 +17,7 @@ backend = {{ db_backend }}
 {% endif %}
 {% if db_connection is defined %}
 connection = {{ db_connection }}
+tooz_connection = {{ db_connection | replace("mysql+pymysql","mysql") }}
 {% endif %}
 mysql_engine = {{ mysql_engine | default("InnoDB") }}
 
